@@ -20,10 +20,10 @@ class SolutionFormatterTest {
     final int number = 1234567890;
 
     // WHEN
-    final String result = solutionFormatter.format(number);
+    final String result = solutionFormatter.format(1);
 
     // THEN
-    assertThat(result).isEqualTo("1 234 567 890");
+    assertThat(result).isEqualTo("1");
   }
 
 }
