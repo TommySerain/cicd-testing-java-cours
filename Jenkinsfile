@@ -10,7 +10,7 @@ node {
     try {
         stage('Initialize') {
             def dockerHome = tool 'dockerlatest'
-            def mavenHome = tool 'mavenlatest'
+            def mavenHome = tool 'mavenLatest'
             env.PATH = "${dockerHome}/bin:${mavenHome}/bin:${env.PATH}"
         }
 
@@ -78,14 +78,13 @@ def imageBuild(containerName, tag) {
 
 def pushToImage(containerName, tag, dockerUser, dockerPassword) {
     sh "docker login -u $dockerUser -p $dockerPassword"
-    // sh "docker tag $containerName:$tag $dockerUser/$containerName:$tag"
     sh "docker tag $containerName:$tag $dockerUser/$containerName:$tag"
     sh "docker push $dockerUser/$containerName:$tag"
     echo "Image push complete"
 }
 
 def runApp(containerName, tag, dockerHubUser, httpPort, envName) {
-    sh "docker pull $dockerHubUser/$containerName:$tag"
+    sh "docker pull $dockerHubUser/$containerName"
     sh "docker run --rm --env SPRING_ACTIVE_PROFILES=$envName -d -p $httpPort:$httpPort --name $containerName $dockerHubUser/$containerName:$tag"
     echo "Application started on port: ${httpPort} (http)"
 }
