@@ -36,7 +36,7 @@ node {
         }
 
         stage("Image Prune") {
-            imagePrune(CONTAINER_NAME)
+            imagePruneTest(CONTAINER_NAME)
         }
 
         stage('Image Build') {
@@ -63,7 +63,7 @@ node {
 
 }
 
-def imagePrune(containerName) {
+def imagePruneTest(containerName) {
     try {
         sh "docker image prune -f"
         sh "docker stop $containerName"
@@ -72,8 +72,7 @@ def imagePrune(containerName) {
 }
 
 def imageBuild(containerName, tag) {
-    // sh "docker build -t $containerName:$tag  -t $containerName --pull --no-cache ."
-    sh "docker build -t $containerName:$tag --pull --no-cache ."
+    sh "docker build -t $containerName:$tag  -t $containerName --pull --no-cache ."
     echo "Image build complete"
 }
 
