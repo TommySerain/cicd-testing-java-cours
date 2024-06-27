@@ -64,15 +64,23 @@ node {
 }
 
 def imagePrune(containerName) {
-    try {
+     try {
         sh "docker image prune -f"
-        sh "docker stop $containerName"
+        // Vérifier si le conteneur existe avant de l'arrêter
+        def containerExists = sh(script: "docker ps -a --filter 'name=${containerName}' --format '{{.Names}}'", returnStdout: true).trim()
+        if (containerExists == containerName) {
+            sh "docker stop $containerName"
+        } else {
+            echo "No such container: $containerName"
+        }
     } catch (ignored) {
+        // Optionally handle the exception or log it
+        echo "An error occurred while pruning images or stopping the container"
     }
 }
 
 def imageBuild(containerName, tag) {
-    sh "docker build -t $containerName:$tag  -t $containerName --pull --no-cache ."
+    sh "docker build -t $containerName --pull --no-cache ."
     echo "Image build complete"
 }
 
