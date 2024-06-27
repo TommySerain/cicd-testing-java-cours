@@ -66,7 +66,12 @@ node {
 def imagePrune(containerName) {
     try {
         sh "docker image prune -f"
-        sh "docker stop $containerName"
+         def containerExists = sh(script: "docker ps -a --filter 'name=${containerName}' --format '{{.Names}}'", returnStdout: true).trim()
+        if (containerExists == containerName) {
+            sh "docker stop $containerName"
+        } else {
+            echo "No such container: $containerName"
+        }
     } catch (ignored) {
     }
 }
