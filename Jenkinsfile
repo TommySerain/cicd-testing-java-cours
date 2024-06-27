@@ -8,24 +8,6 @@ def EMAIL_RECIPIENTS = "tommyserain@gmail.com"
 
 node {
     try {
-        stage('Clear Maven Cache') {
-            steps {
-                sh 'rm -rf ~/.m2/repository/*'
-            }
-        }
-
-        stage('Clear Docker Cache') {
-            steps {
-                sh 'docker system prune -af'
-            }
-        }
-
-        stage('Clear Jenkins Temp Files') {
-            steps {
-                sh 'rm -rf /var/lib/jenkins/tmp/*'
-            }
-        }
-
         stage('Initialize') {
             def dockerHome = tool 'dockerlatest'
             def mavenHome = tool 'mavenlatest'
