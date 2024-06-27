@@ -66,18 +66,14 @@ node {
 def imagePrune(containerName) {
     try {
         sh "docker image prune -f"
-         def containerExists = sh(script: "docker ps -a --filter 'name=${containerName}' --format '{{.Names}}'", returnStdout: true).trim()
-        if (containerExists == containerName) {
-            sh "docker stop $containerName"
-        } else {
-            echo "No such container: $containerName"
-        }
+        sh "docker stop $containerName"
     } catch (ignored) {
     }
 }
 
 def imageBuild(containerName, tag) {
-    sh "docker build -t $containerName:$tag  -t $containerName --pull --no-cache ."
+    // sh "docker build -t $containerName:$tag  -t $containerName --pull --no-cache ."
+    sh "docker build -t $containerName:$tag --pull --no-cache ."
     echo "Image build complete"
 }
 
