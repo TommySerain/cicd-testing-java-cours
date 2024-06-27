@@ -36,7 +36,7 @@ node {
         }
 
         stage("Image Prune") {
-            imagePruneTest(CONTAINER_NAME)
+            imagePrune(CONTAINER_NAME)
         }
 
         stage('Image Build') {
@@ -63,7 +63,7 @@ node {
 
 }
 
-def imagePruneTest(containerName) {
+def imagePrune(containerName) {
     try {
         sh "docker image prune -f"
         sh "docker stop $containerName"
